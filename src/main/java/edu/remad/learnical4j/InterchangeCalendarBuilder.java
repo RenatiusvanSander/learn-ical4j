@@ -98,8 +98,6 @@ public class InterchangeCalendarBuilder {
 	}
 
 	private void addOrganizers(VEvent event) {
-		// own method
-		// Create an Organizer
 		for (Entry<String, List<Parameter>> organizerEntry : organizers.entrySet()) {
 			Organizer organizer = new Organizer(organizerEntry.getKey());
 			organizer.getParameterList().addAll(organizerEntry.getValue());
@@ -108,8 +106,6 @@ public class InterchangeCalendarBuilder {
 	}
 
 	private void addAttendees(VEvent event) {
-		// own addAttendees
-		// Add email addresses as attendees
 		for (Entry<String, List<Parameter>> attendeeEntry : attendees.entrySet()) {
 			Attendee attendee = new Attendee(attendeeEntry.getKey());
 
