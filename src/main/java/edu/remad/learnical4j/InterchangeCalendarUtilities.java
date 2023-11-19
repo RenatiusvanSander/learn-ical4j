@@ -9,7 +9,12 @@ import java.util.Locale;
 
 import org.threeten.extra.PackedFields;
 
+import net.fortuna.ical4j.model.property.Uid;
+import net.fortuna.ical4j.util.RandomUidGenerator;
+
 public class InterchangeCalendarUtilities {
+	
+	private static final RandomUidGenerator UID_GENERATOR = new RandomUidGenerator();
 	
 	private static final String GERMAN_TIME_PATTERN = "dd.MM.yyyy HH:mm";
 	
@@ -21,5 +26,9 @@ public class InterchangeCalendarUtilities {
 		LocalDateTime meetingTime = LocalDateTime.ofInstant(calendarDate.toInstant(), calendarDate.getTimeZone().toZoneId());
 		
 		return meetingTime;		
+	}
+	
+	public static Uid generateUid() {
+		return UID_GENERATOR.generateUid();
 	}
 }
