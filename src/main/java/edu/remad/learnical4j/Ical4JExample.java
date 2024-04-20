@@ -58,6 +58,7 @@ public class Ical4JExample {
 		Map<String, List<Parameter>> attendees = new HashedMap<>();
 		attendees.put(mailTo + attendeeEmail, attendeeParameters);
 		attendees.put(mailTo + attendeeEmail2, attendeeParameters2);
+		attendees.put(mailTo + email, organizerParameters);
 
 		InterchangeCalendarData calendarData = new InterchangeCalendarData();
 		calendarData.setStartTime(LocalDateTime.parse(startTimeString, timeFormatter));

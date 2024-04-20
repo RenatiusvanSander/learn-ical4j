@@ -84,7 +84,7 @@ public class InterchangeCalendarBuilder {
 		addAttendees(event);
 		addOrganizers(event);
 		event.add(location);
-		event.add(new Method(Method.VALUE_REPLY));
+		event.add(new Method(Method.VALUE_REQUEST));
 		event.add(new Status(Status.VALUE_CONFIRMED));
 
 		Calendar icsCalendar = new Calendar();
