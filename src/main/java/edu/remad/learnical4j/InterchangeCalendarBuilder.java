@@ -2,7 +2,8 @@ package edu.remad.learnical4j;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,14 +15,16 @@ import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.Attendee;
 import net.fortuna.ical4j.model.property.Location;
+import net.fortuna.ical4j.model.property.Method;
 import net.fortuna.ical4j.model.property.Organizer;
+import net.fortuna.ical4j.model.property.Status;
 import net.fortuna.ical4j.validate.ValidationException;
 
 public class InterchangeCalendarBuilder {
 
-	private Timestamp startTimestamp;
+	private LocalDateTime startTime;
 
-	private Timestamp endTimestamp;
+	private LocalDateTime endTime;
 
 	private String appointmentName;
 
@@ -33,14 +36,14 @@ public class InterchangeCalendarBuilder {
 
 	private Location location;
 
-	public InterchangeCalendarBuilder setStartTimestamp(Timestamp startTimestamp) {
-		this.startTimestamp = startTimestamp;
+	public InterchangeCalendarBuilder setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
 
 		return this;
 	}
 
-	public InterchangeCalendarBuilder setEndTimestamp(Timestamp endTimestamp) {
-		this.endTimestamp = endTimestamp;
+	public InterchangeCalendarBuilder setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
 
 		return this;
 	}
@@ -76,12 +79,13 @@ public class InterchangeCalendarBuilder {
 	}
 
 	public byte[] build() {
-		VEvent event = new VEvent(startTimestamp.toLocalDateTime().toLocalDate(),
-				endTimestamp.toLocalDateTime().toLocalDate(), appointmentName);
+		VEvent event = new VEvent(startTime, endTime, appointmentName);
 		event.add(InterchangeCalendarUtilities.generateUid());
 		addAttendees(event);
 		addOrganizers(event);
 		event.add(location);
+		event.add(new Method(Method.VALUE_REPLY));
+		event.add(new Status(Status.VALUE_CONFIRMED));
 
 		Calendar icsCalendar = new Calendar();
 		icsCalendar.add(prodId);
@@ -99,15 +103,21 @@ public class InterchangeCalendarBuilder {
 
 	private void addOrganizers(VEvent event) {
 		for (Entry<String, List<Parameter>> organizerEntry : organizers.entrySet()) {
-			Organizer organizer = new Organizer(organizerEntry.getKey());
-			organizer.getParameterList().addAll(organizerEntry.getValue());
+			URI uri = URI.create(organizerEntry.getKey());
+			Organizer organizer = new Organizer(uri);
+
+			for (Parameter parameter : organizerEntry.getValue()) {
+				organizer.add(parameter);
+			}
+
 			event.add(organizer);
 		}
 	}
 
 	private void addAttendees(VEvent event) {
 		for (Entry<String, List<Parameter>> attendeeEntry : attendees.entrySet()) {
-			Attendee attendee = new Attendee(attendeeEntry.getKey());
+			URI uri = URI.create(attendeeEntry.getKey());
+			Attendee attendee = new Attendee(uri);
 
 			for (Parameter parameter : attendeeEntry.getValue()) {
 				attendee.add(parameter);

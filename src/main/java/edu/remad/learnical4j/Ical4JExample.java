@@ -1,11 +1,10 @@
 package edu.remad.learnical4j;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,9 @@ import java.util.Map;
 import org.apache.commons.collections4.map.HashedMap;
 
 import net.fortuna.ical4j.model.Parameter;
+import net.fortuna.ical4j.model.parameter.Cn;
+import net.fortuna.ical4j.model.parameter.Email;
+import net.fortuna.ical4j.model.parameter.Role;
 import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.validate.ValidationException;
@@ -22,39 +24,60 @@ public class Ical4JExample {
 
 	public static void main(String[] args) {
 		/* Event start and end time in milliseconds */
-		String startTimeString = "13.11.2023 10:00";
-		String endTimeString = "13.11.2023 11:00";
+		String startTimeString = "2024-04-20 10:00";
+		String endTimeString = "2024-04-20 11:00";
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String appointmentName = "Nachhilfe";
+		String stringProdId = "-//R.Meier Freelance Nachhilfe//Tutoring 2//EN";
+		String filePath = "rmeier_freelace_nachhilfe_termin.ics";
+		ProdId prodId = new ProdId(stringProdId);
+		String email = "remad@web.de";
+		String attendeeEmail = "pamela@hotty.de";
+		String attendeeEmail2 = "pamela2@hotty.de";
+		String userName = "Remy" + " " + "Meier";
+		String mailTo = "mailto:";
+		String location = "Remote Teams";
+		String attendeeUsername1 = "Pamela 1";
+		String attendeeUsername2 = "Pamela 2";
+
+		List<Parameter> organizerParameters = new ArrayList<Parameter>();
+		organizerParameters.add(new Email(email));
+		organizerParameters.add(new Cn(userName));
+		organizerParameters.add(Role.CHAIR);
+		Map<String, List<Parameter>> organizers = new HashMap<>();
+		organizers.put(mailTo + email, organizerParameters);
+		
+		List<Parameter> attendeeParameters = new ArrayList<Parameter>();
+		attendeeParameters.add(new Email(attendeeEmail));
+		attendeeParameters.add(new Cn(attendeeUsername1));
+		attendeeParameters.add(Role.REQ_PARTICIPANT);
+		List<Parameter> attendeeParameters2 = new ArrayList<Parameter>();
+		attendeeParameters2.add(new Email(attendeeEmail));
+		attendeeParameters2.add(new Cn(attendeeUsername2));
+		attendeeParameters2.add(Role.REQ_PARTICIPANT);
+		Map<String, List<Parameter>> attendees = new HashedMap<>();
+		attendees.put(mailTo + attendeeEmail, attendeeParameters);
+		attendees.put(mailTo + attendeeEmail2, attendeeParameters2);
 
 		InterchangeCalendarData calendarData = new InterchangeCalendarData();
-		calendarData.setStartTimestamp(new Timestamp(6325635636535L));
-		calendarData.setStartTimeString(startTimeString);
-		calendarData.setEndTimestamp(new Timestamp(46283742378473274L));
-		calendarData.setEndTimeString(endTimeString);
+		calendarData.setStartTime(LocalDateTime.parse(startTimeString, timeFormatter));
+		calendarData.setEndTime(LocalDateTime.parse(endTimeString, timeFormatter));
 		calendarData.setAppointmentName(appointmentName);
-		calendarData.setLocation("Location");
-		Map<String, List<Parameter>> attendees = new HashedMap<>();
-		attendees.put("pamela@hotty.de", new ArrayList<Parameter>());
-		attendees.put("pamela2@hotty.de", new ArrayList<Parameter>());
+		calendarData.setLocation(location);
 		calendarData.setAttendees(attendees);
-		Map<String, List<Parameter>> organizers = new HashMap<>();
-		organizers.put("MAILTO:remad@web.de", new ArrayList<Parameter>());
 		calendarData.setOrganizers(organizers);
-		ProdId prodId = new ProdId("-//Ben Fortuna//iCal4j 1.0//EN");
 		calendarData.setProdId(prodId);
-		String filePath = "rmeier_freelace_nachhilfe_termin.ics";
 		calendarData.setFilePath(filePath);
 
-		byte[] icsFile = new InterchangeCalendarBuilder().setStartTimestamp(calendarData.getStartTimestamp()).setEndTimestamp(calendarData.getEndTimestamp()).setAppointmentName(calendarData.getAppointmentName()).setAttendees(calendarData.getAttendees()).setOrganizers(calendarData.getOrganizers()).setProdId(calendarData.getProdId()).setLocation(new Location(calendarData.getLocation()) ).build();
-		
+		byte[] icsFile = new InterchangeCalendarBuilder().setStartTime(calendarData.getStartTime())
+				.setEndTime(calendarData.getEndTime()).setAppointmentName(calendarData.getAppointmentName())
+				.setAttendees(calendarData.getAttendees()).setOrganizers(calendarData.getOrganizers())
+				.setProdId(calendarData.getProdId()).setLocation(new Location(calendarData.getLocation())).build();
+
 		try (FileOutputStream fis = new FileOutputStream(new File(calendarData.getFilePath()))) {
 			fis.write(icsFile);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (ValidationException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (ValidationException | IOException e) {
+			// TODO
 		}
 	}
 }

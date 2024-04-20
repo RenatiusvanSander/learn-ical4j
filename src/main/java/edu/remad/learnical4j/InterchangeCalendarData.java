@@ -1,6 +1,6 @@
 package edu.remad.learnical4j;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +9,8 @@ import net.fortuna.ical4j.model.property.ProdId;
 
 public class InterchangeCalendarData {
 
-	private Timestamp endTimestamp;
-	private String endTimeString;
-	private Timestamp startTimestamp;
-	private String startTimeString;
+	private LocalDateTime endTime;
+	private LocalDateTime startTime;
 	private String appointmentName;
 	private String location;
 	private Map<String, List<Parameter>> attendees;
@@ -20,32 +18,20 @@ public class InterchangeCalendarData {
 	private ProdId prodId;
 	private String filePath;
 
-	public Timestamp getEndTimestamp() {
-		return endTimestamp;
+	public LocalDateTime getEndTime() {
+		return endTime;
 	}
 
-	public String getEndTimeString() {
-		return endTimeString;
+	public void setEndTime(LocalDateTime endTimestamp) {
+		this.endTime = endTimestamp;
 	}
 
-	public String getStartTimeString() {
-		return startTimeString;
+	public void setStartTime(LocalDateTime endTimeString) {
+		this.startTime = endTimeString;
 	}
-
-	public void setEndTimestamp(Timestamp endTimestamp) {
-		this.endTimestamp = endTimestamp;
-	}
-
-	public void setEndTimeString(String endTimeString) {
-		this.endTimeString = endTimeString;
-	}
-
-	public void setStartTimestamp(Timestamp endTimeString) {
-		this.startTimestamp = endTimeString;
-	}
-
-	public void setStartTimeString(String startTimeString) {
-		this.startTimeString = startTimeString;
+	
+	public LocalDateTime getStartTime() {
+		return startTime;
 	}
 
 	public void setAppointmentName(String appointmentName) {
@@ -82,7 +68,6 @@ public class InterchangeCalendarData {
 
 	public void setProdId(ProdId prodId) {
 		this.prodId = prodId;
-		
 	}
 
 	public ProdId getProdId() {
@@ -96,9 +81,4 @@ public class InterchangeCalendarData {
 	public String getFilePath() {
 		return filePath;
 	}
-	
-	public Timestamp getStartTimestamp() {
-		return startTimestamp;
-	}
-
 }
