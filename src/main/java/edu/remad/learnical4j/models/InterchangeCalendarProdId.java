@@ -1,6 +1,6 @@
-package edu.remad.learnical4j;
+package edu.remad.learnical4j.models;
 
-import edu.remad.learnical4j.utilities.InterchangeCalendarUtilities;
+import edu.remad.learnical4j.constants.InterchangeCalendarConstants;
 import net.fortuna.ical4j.model.property.ProdId;
 
 public class InterchangeCalendarProdId extends ProdId{
@@ -14,7 +14,7 @@ public class InterchangeCalendarProdId extends ProdId{
 	 * Constructor creates instance of {@link InterchangeCalendarProdId} with prefilled production id
 	 */
 	public InterchangeCalendarProdId() {
-		super(InterchangeCalendarUtilities.PRODUCTION_ID_KEY);
+		super(InterchangeCalendarConstants.PRODUCTION_ID_KEY);
 	}
 	
 	/**

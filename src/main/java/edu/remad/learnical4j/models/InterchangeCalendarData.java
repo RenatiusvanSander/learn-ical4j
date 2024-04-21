@@ -1,4 +1,4 @@
-package edu.remad.learnical4j;
+package edu.remad.learnical4j.models;
 
 import java.time.LocalDateTime;
 import java.util.List;

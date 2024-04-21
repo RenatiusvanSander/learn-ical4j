@@ -1,4 +1,4 @@
-package edu.remad.learnical4j;
+package edu.remad.learnical4j.builders;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.remad.learnical4j.constants.InterchangeCalendarConstants;
 import edu.remad.learnical4j.exceptions.InterchangeCalendarBuilderException;
+import edu.remad.learnical4j.models.InterchangeCalendarData;
 import edu.remad.learnical4j.utilities.InterchangeCalendarUtilities;
 import net.fortuna.ical4j.model.Parameter;
 import net.fortuna.ical4j.model.property.Location;
@@ -38,8 +40,8 @@ public class InterchangeCalendarBuilderExample {
 		Map<String, List<Parameter>> attendees = InterchangeCalendarUtilities.createAttendeeMap(attendeeData);
 
 		InterchangeCalendarData calendarData = new InterchangeCalendarData();
-		calendarData.setStartTime(LocalDateTime.parse(startTimeString, InterchangeCalendarUtilities.DATE_AND_TIME_FORMATTER));
-		calendarData.setEndTime(LocalDateTime.parse(endTimeString, InterchangeCalendarUtilities.DATE_AND_TIME_FORMATTER));
+		calendarData.setStartTime(LocalDateTime.parse(startTimeString, InterchangeCalendarConstants.DATE_AND_TIME_FORMATTER));
+		calendarData.setEndTime(LocalDateTime.parse(endTimeString, InterchangeCalendarConstants.DATE_AND_TIME_FORMATTER));
 		calendarData.setAppointmentName(appointmentName);
 		calendarData.setLocation(location);
 		calendarData.setAttendees(attendees);

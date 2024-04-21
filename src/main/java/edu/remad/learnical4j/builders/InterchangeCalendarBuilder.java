@@ -1,4 +1,4 @@
-package edu.remad.learnical4j;
+package edu.remad.learnical4j.builders;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

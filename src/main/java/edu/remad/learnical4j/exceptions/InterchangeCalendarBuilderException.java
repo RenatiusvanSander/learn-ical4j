@@ -1,6 +1,6 @@
 package edu.remad.learnical4j.exceptions;
 
-import edu.remad.learnical4j.InterchangeCalendarBuilder;
+import edu.remad.learnical4j.builders.InterchangeCalendarBuilder;
 
 public class InterchangeCalendarBuilderException extends RuntimeException {
 	
